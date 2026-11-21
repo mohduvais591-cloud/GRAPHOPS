@@ -1,4 +1,14 @@
-# AegisGraph AI
+# GraphOps: Graph Analytics for Proactive Threat Hunting and Blast Radius Containment
+**Theme:** T2 — Cybersecurity (Digital Innovation Sector) | **Problem Statement:** PS T2.1  
+**Target Repository:** [mohduvais591-cloud/GRAPHOPS](https://github.com/mohduvais591-cloud/GRAPHOPS)
+
+### Key Project Plans & Deliverables
+- 📋 **[FINALE_BUILD_PLAN.md](FINALE_BUILD_PLAN.md)** — *Step Zero Deliverable: Product Audit and Finale Build Plan*
+- 🎯 **[GRAPHOPS_HACKATHON_PLAN.md](GRAPHOPS_HACKATHON_PLAN.md)** — *Strategic & Technical Architecture and Hackathon Plan*
+
+---
+
+# AegisGraph AI / GraphOps Core Engine
 
 Cyber threat intelligence, cited graph exploration, and potential attack-path
 analysis over uploaded documents. Built with FastAPI and React/Vite.
