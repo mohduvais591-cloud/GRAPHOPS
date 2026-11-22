@@ -9,7 +9,7 @@ tiktoken>=0.7.0
 numpy>=1.26.0
 neo4j>=5.20.0
 python-dotenv>=1.0.0
-python-multipart>=0.0.9
+python-multipart>=0.0.34
 psycopg[binary]==3.3.6
 PyJWT[crypto]==2.15.1
 mcp==1.30.0
