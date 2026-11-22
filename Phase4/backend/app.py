@@ -823,6 +823,38 @@ from fastapi.staticfiles import StaticFiles
 # MVP Endpoints: Git Repo Analysis, Functional Graph, Vulnerabilities & Qwen 3
 # ==============================================================================
 
+@app.get("/v1/system/neon-status")
+def neon_status_endpoint():
+    """Returns live Neon Postgres connection status and verified tables."""
+    from backend.storage.neon_store import NeonStore
+    import psycopg
+
+    db_url = os.environ.get("DATABASE_URL")
+    if not db_url:
+        return {"status": "unconfigured", "connected": False, "error": "DATABASE_URL not set in environment."}
+
+    try:
+        store = NeonStore()
+        with store.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = 'aegis' ORDER BY table_name;")
+                tables = [r[0] for r in cur.fetchall()]
+                cur.execute("SELECT version();")
+                pg_version = cur.fetchone()[0]
+        return {
+            "status": "connected",
+            "connected": True,
+            "provider": "neon",
+            "branch": os.environ.get("NEON_BRANCH", "production"),
+            "branch_id": os.environ.get("NEON_BRANCH_ID", ""),
+            "version": pg_version,
+            "schema": "aegis",
+            "tables": tables,
+        }
+    except Exception as exc:
+        return {"status": "error", "connected": False, "error": str(exc)}
+
+
 @app.get("/v1/ai/status")
 def ai_status_endpoint():
     """Returns local LLM provider status and model availability."""

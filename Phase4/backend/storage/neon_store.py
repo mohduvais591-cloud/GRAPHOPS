@@ -29,8 +29,7 @@ class NeonStore:
                 connection = self.connection_factory()
             else:
                 import psycopg
-                connection = psycopg.connect(self.database_url, sslmode="require", connect_timeout=10,
-                                              options="-c statement_timeout=30000")
+                connection = psycopg.connect(self.database_url, sslmode="require", connect_timeout=10)
             with connection:
                 yield connection
         except Exception:

@@ -14,8 +14,16 @@ import argparse
 # Add Phase4 and root to Python path
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 PHASE4_DIR = os.path.join(ROOT_DIR, "Phase4")
-if PHASE4_DIR not in sys.path:
-    sys.path.insert(0, PHASE4_DIR)
+for p in [PHASE4_DIR, ROOT_DIR]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(ROOT_DIR, ".env.local"))
+    load_dotenv(os.path.join(ROOT_DIR, ".env"))
+except ImportError:
+    pass
 
 import uvicorn
 

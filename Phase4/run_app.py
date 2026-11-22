@@ -11,6 +11,15 @@ for p in [PHASE4_DIR, ROOT_DIR]:
     if p not in sys.path:
         sys.path.insert(0, p)
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(ROOT_DIR, ".env.local"))
+    load_dotenv(os.path.join(ROOT_DIR, ".env"))
+    load_dotenv(os.path.join(PHASE4_DIR, ".env.local"))
+    load_dotenv(os.path.join(PHASE4_DIR, ".env"))
+except ImportError:
+    pass
+
 # Set safe defaults for Render/Cloud deployment
 os.environ.setdefault("VECTOR_BACKEND", "local")
 os.environ.setdefault("AUTH_MODE", "demo")
