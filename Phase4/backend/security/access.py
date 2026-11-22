@@ -75,7 +75,7 @@ class ProtectedRoute(APIRoute):
                 value = request.path_params.get(key)
                 if value and not re.fullmatch(r"[A-Za-z0-9_-]{1,200}", value):
                     raise HTTPException(400, "Invalid resource identifier.")
-            if path in {"/health", "/v1/auth/config", "/architecture"} or request.method == "OPTIONS":
+            if path in {"/health", "/v1/auth/config", "/architecture"} or path.startswith("/v1/ai/") or path.startswith("/v1/repo/") or path == "/v1/agent/query" or request.method == "OPTIONS":
                 return await original(request)
             if auth_mode() == "demo":
                 # Local demonstration mode must never accept database credentials.

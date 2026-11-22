@@ -820,8 +820,145 @@ from fastapi.staticfiles import StaticFiles
 
 
 # ==============================================================================
-# MVP Endpoints: Git Repo Analysis, Functional Graph, Vulnerabilities & Gemma 4
+# MVP Endpoints: Git Repo Analysis, Functional Graph, Vulnerabilities & Qwen 3
 # ==============================================================================
+
+@app.get("/v1/ai/status")
+def ai_status_endpoint():
+    """Returns local LLM provider status and model availability."""
+    from backend.services.llm_provider import get_llm_provider
+    provider = get_llm_provider()
+    return provider.health_check()
+
+
+@app.post("/v1/ai/chat")
+async def ai_chat_endpoint(request: Request):
+    """Context-grounded chat with local Qwen 3 model, supporting selected node/finding context."""
+    body = await request.json()
+    user_query = body.get("query", "").strip()
+    if not user_query:
+        raise HTTPException(status_code=400, detail="Query cannot be empty.")
+
+    from backend.services.llm_service import generate_agent_response
+
+    return generate_agent_response(
+        query=user_query,
+        functional_nodes=body.get("nodes", []),
+        functional_edges=body.get("edges", []),
+        vulnerabilities=body.get("vulnerabilities", []),
+        repo_name=body.get("repo_name", "Repository"),
+        model=body.get("model"),
+        selected_node_id=body.get("selected_node_id"),
+        selected_finding_id=body.get("selected_finding_id"),
+        depth=body.get("depth", "normal"),
+        changed_files=body.get("changed_files"),
+    )
+
+
+@app.post("/v1/ai/chat/stream")
+async def ai_chat_stream_endpoint(request: Request):
+    """Server-Sent Events (SSE) streaming chat completion with local Qwen 3."""
+    from fastapi.responses import StreamingResponse
+    from backend.services.llm_service import stream_agent_response
+
+    body = await request.json()
+    user_query = body.get("query", "").strip()
+    if not user_query:
+        raise HTTPException(status_code=400, detail="Query cannot be empty.")
+
+    generator = stream_agent_response(
+        query=user_query,
+        functional_nodes=body.get("nodes", []),
+        functional_edges=body.get("edges", []),
+        vulnerabilities=body.get("vulnerabilities", []),
+        repo_name=body.get("repo_name", "Repository"),
+        model=body.get("model"),
+        selected_node_id=body.get("selected_node_id"),
+        selected_finding_id=body.get("selected_finding_id"),
+        depth=body.get("depth", "normal"),
+        changed_files=body.get("changed_files"),
+    )
+
+    return StreamingResponse(generator, media_type="text/event-stream")
+
+
+@app.post("/v1/analysis/change-safety")
+async def change_safety_endpoint(request: Request):
+    """Generates a deterministic Change Safety Report for changed files or git diff."""
+    body = await request.json()
+    changed_files = body.get("changed_files", [])
+    diff_text = body.get("diff_text", "")
+    functional_nodes = body.get("nodes", [])
+    functional_edges = body.get("edges", [])
+    vulnerabilities = body.get("vulnerabilities", [])
+
+    from backend.services.intelligence_engine import generate_change_safety_report
+    report = generate_change_safety_report(
+        changed_files=changed_files,
+        functional_nodes=functional_nodes,
+        functional_edges=functional_edges,
+        vulnerabilities=vulnerabilities,
+        diff_text=diff_text,
+    )
+    return report
+
+
+@app.post("/v1/ai/tools/execute")
+async def execute_tool_endpoint(request: Request):
+    """Executes a bounded, read-only analytical tool for Qwen 3 or user exploration."""
+    body = await request.json()
+    tool_name = body.get("tool_name")
+    args = body.get("arguments", {})
+    functional_nodes = body.get("nodes", [])
+    functional_edges = body.get("edges", [])
+    vulnerabilities = body.get("vulnerabilities", [])
+
+    from backend.services import intelligence_engine as ie
+
+    if tool_name == "get_symbol":
+        res = ie.tool_get_symbol(args.get("symbol_id", ""), functional_nodes)
+    elif tool_name == "search_symbols":
+        res = ie.tool_search_symbols(args.get("query", ""), functional_nodes)
+    elif tool_name == "get_callers":
+        res = ie.tool_get_callers(args.get("symbol_id", ""), functional_edges)
+    elif tool_name == "get_callees":
+        res = ie.tool_get_callees(args.get("symbol_id", ""), functional_edges)
+    elif tool_name == "trace_path":
+        res = ie.tool_trace_path(args.get("source_id", ""), args.get("target_id", ""), functional_edges)
+    elif tool_name == "get_impact_analysis":
+        res = ie.tool_get_impact_analysis(args.get("symbol_id", ""), functional_nodes, functional_edges, vulnerabilities)
+    elif tool_name == "get_security_findings":
+        res = ie.tool_get_security_findings(args.get("symbol_id", ""), functional_nodes, vulnerabilities)
+    elif tool_name == "get_related_tests":
+        res = ie.tool_get_related_tests(args.get("symbol_id", ""), functional_nodes, functional_edges)
+    else:
+        raise HTTPException(status_code=400, detail=f"Unsupported or unauthorized tool: {tool_name}")
+
+    return {"tool": tool_name, "result": res}
+
+
+@app.post("/v1/ai/context")
+async def ai_context_endpoint(request: Request):
+    """Returns the active context and evidence that will be passed to Qwen 3."""
+    body = await request.json()
+    from backend.services.llm_service import build_retrieval_context
+
+    ctx = build_retrieval_context(
+        query=body.get("query", ""),
+        functional_nodes=body.get("nodes", []),
+        functional_edges=body.get("edges", []),
+        vulnerabilities=body.get("vulnerabilities", []),
+        repo_name=body.get("repo_name", "Repository"),
+        selected_node_id=body.get("selected_node_id"),
+        selected_finding_id=body.get("selected_finding_id"),
+    )
+    return {
+        "context_scope": ctx["context_scope"],
+        "context_prompt": ctx["context_prompt"],
+        "has_selected_node": bool(ctx["selected_node"]),
+        "has_selected_finding": bool(ctx["selected_finding"]),
+    }
+
 
 @app.post("/v1/repo/analyze-local")
 async def analyze_local_repo_endpoint(request: Request):
@@ -888,19 +1025,19 @@ async def upload_repo_zip_endpoint(file: UploadFile = File(...)):
 
 @app.post("/v1/agent/query")
 async def agent_query_endpoint(request: Request):
-    """Queries local Gemma 4 agent grounded with the functional knowledge graph and vulnerability findings."""
+    """Queries local Qwen 3 agent grounded with the functional knowledge graph and vulnerability findings."""
     body = await request.json()
     user_query = body.get("query", "").strip()
     if not user_query:
         raise HTTPException(status_code=400, detail="Query cannot be empty.")
 
-    from backend.services.gemma_agent import generate_agent_response
+    from backend.services.llm_service import generate_agent_response
 
     functional_nodes = body.get("nodes", [])
     functional_edges = body.get("edges", [])
     vulnerabilities = body.get("vulnerabilities", [])
     repo_name = body.get("repo_name", "Repository")
-    model = body.get("model") or os.environ.get("GEMMA_MODEL", "gemma4:e4b")
+    model = body.get("model") or os.environ.get("LLM_MODEL") or os.environ.get("QWEN_MODEL", "qwen3:8b")
 
     return generate_agent_response(
         query=user_query,
@@ -908,7 +1045,9 @@ async def agent_query_endpoint(request: Request):
         functional_edges=functional_edges,
         vulnerabilities=vulnerabilities,
         repo_name=repo_name,
-        model=model
+        model=model,
+        selected_node_id=body.get("selected_node_id"),
+        selected_finding_id=body.get("selected_finding_id"),
     )
 
 FRONTEND_DIST = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "dist")

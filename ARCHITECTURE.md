@@ -1,14 +1,14 @@
 # AegisGraph AI — System Architecture & Technical Specifications
 
-> **System Identity**: Minimal Codebase Functional Knowledge Graph, Bug Prioritizer & Local Gemma 4 Agent  
+> **System Identity**: Minimal Codebase Functional Knowledge Graph, Bug Prioritizer & Local Qwen 3 Agent  
 > **Target Environment**: Local Offline / Developer Workstation  
-> **Core Model**: Google's **Gemma 4** via Ollama loopback (`http://127.0.0.1:11434`)
+> **Core Model**: **Qwen 3** via Ollama loopback (`http://127.0.0.1:11434`) (default: `qwen3:8b`)
 
 ---
 
 ## 1. Executive Summary & Under-the-Hood Workflow
 
-AegisGraph AI translates raw repository source code distributed across dozens of files into a **clean, minimal Functional Knowledge Graph** and an **actionable, severity-prioritized vulnerability report**. External AI interaction is powered by a local instance of Google's **Gemma 4** model via Ollama.
+AegisGraph AI translates raw repository source code distributed across dozens of files into a **clean, minimal Functional Knowledge Graph** and an **actionable, severity-prioritized vulnerability report**. External AI interaction is powered by a local instance of **Qwen 3** via Ollama behind a flexible `LLMProvider` abstraction.
 
 ```mermaid
 flowchart TD
@@ -24,11 +24,11 @@ flowchart TD
         AST --> VS["Vulnerability Detection Engine"]
     end
 
-    subgraph Output ["3. 3-Panel State Delivery"]
-        FG --> MiddlePanel["Middle Panel: Functional Nodes & Relationships"]
-        VS --> RightPanel["Right Panel: Severity Priority List (CRITICAL / HIGH / MED / LOW)"]
-        FG & VS --> Context["Graph & Security Context Builder"]
-        Context --> LeftPanel["Left Panel: Local Gemma 4 Agent Chat"]
+    subgraph Output ["3. Minimal Workspace State Delivery"]
+        FG --> MiddlePanel["Center Canvas: Minimal Functional Graph (Nodes & Relations)"]
+        VS --> RightPanel["Center Findings: Severity Priority List (CRITICAL / HIGH / MED / LOW)"]
+        FG & VS --> Context["Context & Evidence Grounding Builder"]
+        Context --> LeftPanel["Right Panel: Local Qwen 3 Agent Chat"]
     end
 ```
 
@@ -112,36 +112,36 @@ Findings are sorted in priority order (`CRITICAL` > `HIGH` > `MEDIUM` > `LOW`) s
 
 ---
 
-## 5. Local Gemma 4 Agent Integration
+## 5. Local Qwen 3 Agent Integration
 
 ```mermaid
 sequenceDiagram
     participant User
     participant Frontend
     participant Backend as FastAPI Backend
-    participant Ollama as Local Ollama (Gemma 4)
+    participant Ollama as Local Ollama (Qwen 3)
 
     User->>Frontend: Enter query: "Explain the critical bugs"
-    Frontend->>Backend: POST /v1/agent/query (query + graph context + bugs)
-    Backend->>Backend: Assemble Context (Nodes, Edges, Findings)
+    Frontend->>Backend: POST /v1/ai/chat (query + graph context + bugs)
+    Backend->>Backend: Assemble Context (Nodes, Edges, Findings, Selections)
     
-    alt Ollama Online with Gemma 4
-        Backend->>Ollama: POST /api/chat (model: gemma4)
-        Ollama-->>Backend: Gemma 4 Generated Answer
-        Backend-->>Frontend: Live Gemma 4 Response
+    alt Ollama Online with Qwen 3
+        Backend->>Ollama: POST /api/chat (model: qwen3:8b)
+        Ollama-->>Backend: Qwen 3 Generated Answer
+        Backend-->>Frontend: Live Qwen 3 Response
     else Ollama Offline / Model Not Pulled
         Backend-->>Backend: Generate Graph-Grounded Direct Synthesis
         Backend-->>Frontend: Contextual Answer + Command to start Ollama
     end
 
-    Frontend->>User: Display Answer in Left Chat Panel
+    Frontend->>User: Display Answer in Right AI Analyst Panel
 ```
 
 ### Local AI Execution Details
-* **Model**: Google's `gemma4` (supports `gemma4:e4b` (recommended), `gemma4:12b`, `gemma4:26b`, `gemma4:31b`).
+* **Model**: **Qwen 3** (defaults to `qwen3:8b`, customizable via `LLM_MODEL` or `QWEN_MODEL`).
 * **Connection**: HTTP Loopback to `http://127.0.0.1:11434/api/chat`.
 * **Zero Cloud Dependence**: No external API keys or remote calls are made.
-* **Offline Fallback Guarantee**: If Ollama is not running, the agent automatically synthesizes an immediate graph-grounded response and provides the exact terminal command to run `gemma4`.
+* **Offline Fallback Guarantee**: If Ollama is not running, the agent automatically synthesizes an immediate graph-grounded response and provides the exact terminal command to run `qwen3:8b`.
 
 ---
 

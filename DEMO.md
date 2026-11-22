@@ -16,25 +16,31 @@ cd Phase4\frontend && npm run dev
 # Step 3: Open the app
 Start-Process "http://localhost:5173"
 
-# Step 4 (one-time, for live Gemma 4 AI):
-ollama run gemma4:e4b
+# Step 4 (one-time, for live Qwen 3 AI):
+ollama run qwen3:8b
 ```
 
 ---
 
-## 🖥️ The 3-Panel Interface
+## 🖥️ Minimal Black-and-White Workspace
+
+The redesigned interface provides a minimal, distraction-free developer experience:
 
 ```
-┌──────────────────────┬──────────────────────────────────┬──────────────────────┐
-│    LEFT PANEL        │        MIDDLE PANEL               │     RIGHT PANEL       │
-│                      │                                   │                       │
-│  📁 Repo Ingestion   │   🕸️ Functional Knowledge Graph   │  🐛 Vulnerability     │
-│  + Gemma 4 Chat      │                                   │     Priority List     │
-│                      │                                   │                       │
-│  Provide local path  │  Nodes = high-level features      │  CRITICAL / HIGH /    │
-│  or upload .zip      │  Edges = data flow & dependencies │  MEDIUM / LOW bugs    │
-│                      │                                   │                       │
-└──────────────────────┴──────────────────────────────────┴──────────────────────┘
+┌───────────────────────────────────────────────────────────────────┐
+│ AegisGraph   my-repository                    Search    Settings │
+├───────────┬────────────────────────────────────────┬──────────────┤
+│           │                                        │              │
+│ Graph     │              CODE GRAPH                │  AI Analyst  │
+│ Findings  │                                        │  (Qwen 3)    │
+│ Files     │          ●────●────●                   │              │
+│           │          │    │    │                   │  Ask about   │
+│           │          ●────●    ●                   │  your code   │
+│           │                                        │              │
+│           │                                        │ [Question...]│
+├───────────┴────────────────────────────────────────┴──────────────┤
+│ 126 files · 6 nodes · 8 relationships · Analysis complete         │
+└───────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -152,16 +158,17 @@ Use the severity filter buttons to narrow the list:
 
 ---
 
-## 🤖 Feature 4: Gemma 4 Codebase Agent
+## 🤖 Feature 4: Qwen 3 Codebase Agent
 
-The left panel includes an AI chat interface powered by Google's **Gemma 4** running locally on your machine via Ollama.
+The right panel includes an AI chat interface powered by **Qwen 3** (default: `qwen3:8b`) running locally on your machine via Ollama.
 
-### What Gemma 4 Knows
+### What Qwen 3 Knows
 
 The agent is grounded with the full context of your repository scan:
 - All **functional nodes** (names, categories, descriptions, file locations)
 - All **functional edges** (inter-component relationships)
 - All **detected vulnerabilities** (severity, location, remediation)
+- **Active focus context** (automatically grounds responses in selected node or finding)
 
 ### Example Conversations
 
@@ -195,7 +202,7 @@ Two shortcuts are available below the chat:
 
 If Ollama is not yet running, the agent still works by synthesizing answers **directly from the graph context** and shows:
 ```
-ℹ️ Gemma 4 is offline. To enable live AI: run `ollama run gemma4`
+ℹ️ Qwen 3 is offline. To enable live AI: run `ollama run qwen3:8b`
 
 Here's what I found from the repository analysis: [graph-grounded answer]
 ```
@@ -213,14 +220,12 @@ Here's what I found from the repository analysis: [graph-grounded answer]
 
 ---
 
-## ⚙️ One-time Gemma 4 Setup
+## ⚙️ One-time Qwen 3 Setup
 
 ```powershell
 # 1. Install Ollama from https://ollama.com (Windows installer)
-# 2. Pull Gemma 4 — pick size based on your hardware:
-ollama pull gemma4:e4b      # Recommended default (~3 GB, fast)
-ollama pull gemma4:12b      # Balanced quality (~7 GB)
-ollama pull gemma4:26b      # High quality MoE (~15 GB)
+# 2. Pull Qwen 3:
+ollama pull qwen3:8b        # Recommended default (~5 GB, fast & high quality)
 
 # 3. Start AegisGraph
 .\start_local.ps1

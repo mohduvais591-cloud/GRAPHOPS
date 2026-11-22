@@ -16,7 +16,8 @@ $env:OPERATIONS_DIR    = Join-Path $PSScriptRoot 'data/local-operations'
 $env:SERVE_FRONTEND    = 'false'    # Frontend is served by Vite dev server
 $env:HOST              = '127.0.0.1'
 $env:PORT              = '8000'
-$env:GEMMA_MODEL       = 'gemma4:e4b'
+$env:LLM_MODEL         = 'qwen3:8b'
+$env:QWEN_MODEL        = 'qwen3:8b'
 
 # ── Resolve Python ────────────────────────────────────────────────────────────
 $pythonExe = $null
@@ -56,8 +57,8 @@ Write-Host ""
 Write-Host "  Backend  → http://127.0.0.1:8000" -ForegroundColor Green
 Write-Host "  Frontend → http://localhost:5173" -ForegroundColor Green
 Write-Host ""
-Write-Host "  For live Gemma 4 AI (one-time setup):" -ForegroundColor Yellow
-Write-Host "    ollama run gemma4:e4b" -ForegroundColor Yellow
+Write-Host "  For live Qwen 3 AI (one-time setup):" -ForegroundColor Yellow
+Write-Host "    ollama run qwen3:8b" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "  Press Ctrl+C to stop both servers." -ForegroundColor DarkGray
 Write-Host "═══════════════════════════════════════════════════════" -ForegroundColor DarkGray
