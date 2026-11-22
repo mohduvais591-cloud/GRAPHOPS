@@ -14,10 +14,10 @@ ROLES = {"viewer": 0, "editor": 1, "admin": 2}
 
 def auth_mode():
     hosted = os.environ.get("RENDER") == "true" or os.environ.get("APP_ENV") == "production"
-    mode = os.environ.get("AUTH_MODE", "neon" if hosted or os.environ.get("VECTOR_BACKEND") == "neon" else "demo")
+    mode = os.environ.get("AUTH_MODE", "neon" if (hosted and os.environ.get("VECTOR_BACKEND") == "neon") else "demo")
     if mode not in {"demo", "neon"}:
         raise ValueError("AUTH_MODE must be demo or neon")
-    if mode == "demo" and (hosted or os.environ.get("VECTOR_BACKEND") == "neon"):
+    if mode == "demo" and os.environ.get("VECTOR_BACKEND") == "neon":
         raise ValueError("Hosted/Neon deployments require AUTH_MODE=neon")
     return mode
 
