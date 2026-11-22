@@ -1,0 +1,50 @@
+{
+  "id": "doc-007",
+  "category": "normal",
+  "title": "SIEM Ingestion Flow",
+  "text": "Endpoint_Agent communicates with Kafka_Broker. Kafka_Broker communicates with SIEM_Indexer.",
+  "entities": [
+    {
+      "name": "Endpoint_Agent",
+      "type": "Asset",
+      "aliases": [
+        "Agent"
+      ]
+    },
+    {
+      "name": "Kafka_Broker",
+      "type": "Asset",
+      "aliases": [
+        "Kafka"
+      ]
+    },
+    {
+      "name": "SIEM_Indexer",
+      "type": "Asset",
+      "aliases": [
+        "SIEM"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Endpoint_Agent",
+      "target": "Kafka_Broker",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "Kafka_Broker",
+      "target": "SIEM_Indexer",
+      "type": "COMMUNICATES_WITH"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Endpoint_Agent communication to Kafka_Broker",
+      "relevant_chunks": [
+        "doc-007"
+      ]
+    }
+  ]
+}

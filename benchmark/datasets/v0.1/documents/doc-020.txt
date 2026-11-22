@@ -1,0 +1,1 @@
+Proxy_A communicates with Proxy_B. Proxy_B communicates with Proxy_C. Proxy_C communicates with Proxy_A.

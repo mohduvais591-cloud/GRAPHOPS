@@ -1,0 +1,38 @@
+{
+  "id": "doc-018",
+  "category": "adversarial",
+  "title": "Vulnerability Title Script Injection",
+  "text": "Vulnerability_9 targets Web_UI. Executing fetch script payload.",
+  "entities": [
+    {
+      "name": "Vulnerability_9",
+      "type": "Vulnerability",
+      "aliases": [
+        "Vuln"
+      ]
+    },
+    {
+      "name": "Web_UI",
+      "type": "Asset",
+      "aliases": [
+        "UI"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Vulnerability_9",
+      "target": "Web_UI",
+      "type": "TARGETS"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Vulnerability_9 target asset",
+      "relevant_chunks": [
+        "doc-018"
+      ]
+    }
+  ]
+}

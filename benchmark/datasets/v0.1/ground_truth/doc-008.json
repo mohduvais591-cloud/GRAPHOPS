@@ -1,0 +1,50 @@
+{
+  "id": "doc-008",
+  "category": "normal",
+  "title": "CI/CD Pipeline Architecture",
+  "text": "Build_Runner communicates with Artifact_Registry. Artifact_Registry communicates with Production_Cluster.",
+  "entities": [
+    {
+      "name": "Build_Runner",
+      "type": "Asset",
+      "aliases": [
+        "Runner"
+      ]
+    },
+    {
+      "name": "Artifact_Registry",
+      "type": "Asset",
+      "aliases": [
+        "Registry"
+      ]
+    },
+    {
+      "name": "Production_Cluster",
+      "type": "Asset",
+      "aliases": [
+        "Production"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Build_Runner",
+      "target": "Artifact_Registry",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "Artifact_Registry",
+      "target": "Production_Cluster",
+      "type": "COMMUNICATES_WITH"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Build_Runner connection to Artifact_Registry",
+      "relevant_chunks": [
+        "doc-008"
+      ]
+    }
+  ]
+}

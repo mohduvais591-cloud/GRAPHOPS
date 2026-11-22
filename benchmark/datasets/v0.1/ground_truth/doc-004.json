@@ -1,0 +1,50 @@
+{
+  "id": "doc-004",
+  "category": "normal",
+  "title": "Payment Tokenization Boundary",
+  "text": "Checkout_Service communicates with Tokenization_Vault. Tokenization_Vault accesses Hardware_Security_Module.",
+  "entities": [
+    {
+      "name": "Checkout_Service",
+      "type": "Asset",
+      "aliases": [
+        "Checkout"
+      ]
+    },
+    {
+      "name": "Tokenization_Vault",
+      "type": "Asset",
+      "aliases": [
+        "Tokenization"
+      ]
+    },
+    {
+      "name": "Hardware_Security_Module",
+      "type": "Asset",
+      "aliases": [
+        "HSM"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Checkout_Service",
+      "target": "Tokenization_Vault",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "Tokenization_Vault",
+      "target": "Hardware_Security_Module",
+      "type": "ACCESSES"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Where does Tokenization_Vault access keys?",
+      "relevant_chunks": [
+        "doc-004"
+      ]
+    }
+  ]
+}

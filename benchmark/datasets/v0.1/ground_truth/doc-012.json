@@ -1,0 +1,39 @@
+{
+  "id": "doc-012",
+  "category": "ambiguous",
+  "title": "Incomplete Sensor Log",
+  "text": "Scanner_Node communicates with Bastion_Host if port 22 is open.",
+  "entities": [
+    {
+      "name": "Scanner_Node",
+      "type": "Asset",
+      "aliases": [
+        "Scanner"
+      ]
+    },
+    {
+      "name": "Bastion_Host",
+      "type": "Asset",
+      "aliases": [
+        "Bastion"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Scanner_Node",
+      "target": "Bastion_Host",
+      "type": "COMMUNICATES_WITH",
+      "condition": "incomplete"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Did Scanner_Node breach Bastion_Host?",
+      "relevant_chunks": [
+        "doc-012"
+      ]
+    }
+  ]
+}

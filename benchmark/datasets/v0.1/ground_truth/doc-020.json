@@ -1,0 +1,55 @@
+{
+  "id": "doc-020",
+  "category": "edge_case",
+  "title": "Cyclic Forwarding Mesh",
+  "text": "Proxy_A communicates with Proxy_B. Proxy_B communicates with Proxy_C. Proxy_C communicates with Proxy_A.",
+  "entities": [
+    {
+      "name": "Proxy_A",
+      "type": "Asset",
+      "aliases": [
+        "A"
+      ]
+    },
+    {
+      "name": "Proxy_B",
+      "type": "Asset",
+      "aliases": [
+        "B"
+      ]
+    },
+    {
+      "name": "Proxy_C",
+      "type": "Asset",
+      "aliases": [
+        "C"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Proxy_A",
+      "target": "Proxy_B",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "Proxy_B",
+      "target": "Proxy_C",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "Proxy_C",
+      "target": "Proxy_A",
+      "type": "COMMUNICATES_WITH"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Proxy_A communications in cyclic mesh",
+      "relevant_chunks": [
+        "doc-020"
+      ]
+    }
+  ]
+}

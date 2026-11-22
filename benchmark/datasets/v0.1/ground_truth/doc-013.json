@@ -1,0 +1,38 @@
+{
+  "id": "doc-013",
+  "category": "contradiction",
+  "title": "Vendor Patch Assessment Alpha",
+  "text": "Gateway_Patch mitigates CVE-2024-4577.",
+  "entities": [
+    {
+      "name": "Gateway_Patch",
+      "type": "Asset",
+      "aliases": [
+        "Patch"
+      ]
+    },
+    {
+      "name": "CVE-2024-4577",
+      "type": "Vulnerability",
+      "aliases": [
+        "PHP CGI"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Gateway_Patch",
+      "target": "CVE-2024-4577",
+      "type": "MITIGATES"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Gateway_Patch status for CVE-2024-4577",
+      "relevant_chunks": [
+        "doc-013"
+      ]
+    }
+  ]
+}

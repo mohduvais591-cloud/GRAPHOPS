@@ -1,0 +1,1 @@
+Remote_Attacker exploits CVE-2024-38077. CVE-2024-38077 targets RDL_Service. RDL_Service accesses Domain_Controller.

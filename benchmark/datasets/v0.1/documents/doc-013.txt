@@ -1,0 +1,1 @@
+Gateway_Patch mitigates CVE-2024-4577.

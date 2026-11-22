@@ -1,0 +1,50 @@
+{
+  "id": "doc-003",
+  "category": "normal",
+  "title": "Database Replication Architecture",
+  "text": "Primary_Database communicates with Replication_Worker. Replication_Worker accesses Read_Replica.",
+  "entities": [
+    {
+      "name": "Primary_Database",
+      "type": "Asset",
+      "aliases": [
+        "Primary"
+      ]
+    },
+    {
+      "name": "Replication_Worker",
+      "type": "Asset",
+      "aliases": [
+        "Worker"
+      ]
+    },
+    {
+      "name": "Read_Replica",
+      "type": "Asset",
+      "aliases": [
+        "Replica"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Primary_Database",
+      "target": "Replication_Worker",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "Replication_Worker",
+      "target": "Read_Replica",
+      "type": "ACCESSES"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Replication_Worker access to Read_Replica",
+      "relevant_chunks": [
+        "doc-003"
+      ]
+    }
+  ]
+}

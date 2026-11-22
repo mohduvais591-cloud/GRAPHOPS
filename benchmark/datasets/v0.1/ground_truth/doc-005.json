@@ -1,0 +1,82 @@
+{
+  "id": "doc-005",
+  "category": "normal",
+  "title": "Threat Actor Profile: APT29",
+  "text": "Threat_Actor_APT29 exploits CVE-2024-4577. CVE-2024-4577 targets PHP_Gateway. PHP_Gateway communicates with Auth_Service. Auth_Service accesses Banking_Database.",
+  "entities": [
+    {
+      "name": "Threat_Actor_APT29",
+      "type": "ThreatActor",
+      "aliases": [
+        "APT29",
+        "Cozy Bear"
+      ]
+    },
+    {
+      "name": "CVE-2024-4577",
+      "type": "Vulnerability",
+      "aliases": [
+        "PHP CGI"
+      ]
+    },
+    {
+      "name": "PHP_Gateway",
+      "type": "Asset",
+      "aliases": [
+        "Gateway"
+      ]
+    },
+    {
+      "name": "Auth_Service",
+      "type": "Asset",
+      "aliases": [
+        "Auth"
+      ]
+    },
+    {
+      "name": "Banking_Database",
+      "type": "Asset",
+      "aliases": [
+        "Banking"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Threat_Actor_APT29",
+      "target": "CVE-2024-4577",
+      "type": "EXPLOITS"
+    },
+    {
+      "source": "CVE-2024-4577",
+      "target": "PHP_Gateway",
+      "type": "TARGETS"
+    },
+    {
+      "source": "PHP_Gateway",
+      "target": "Auth_Service",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "Auth_Service",
+      "target": "Banking_Database",
+      "type": "ACCESSES"
+    }
+  ],
+  "attack_paths": [
+    [
+      "CVE-2024-4577",
+      "PHP_Gateway",
+      "Auth_Service",
+      "Banking_Database"
+    ]
+  ],
+  "questions": [
+    {
+      "query": "Blast radius of CVE-2024-4577 across Banking_Database",
+      "relevant_chunks": [
+        "doc-005"
+      ]
+    }
+  ]
+}

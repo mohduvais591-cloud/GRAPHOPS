@@ -1,0 +1,49 @@
+{
+  "run_id": "run-20261122-032314-6a32ca",
+  "dataset_name": "v0.1",
+  "success": true,
+  "total_duration_seconds": 1.31,
+  "environment": {
+    "timestamp_utc": "2026-11-22T03:23:16.277175+00:00",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python_version": "3.14.6",
+    "git_commit": "615931f74a50449579ac1496cae842cf23d56b52"
+  },
+  "scoring": {
+    "composite_score_pct": 53.33,
+    "breakdown": {
+      "attack_paths": 53.33
+    },
+    "weights": {
+      "functional": 0.15,
+      "extraction": 0.1,
+      "relationships": 0.15,
+      "attack_paths": 0.2,
+      "citations": 0.15,
+      "retrieval": 0.1,
+      "security": 0.1,
+      "performance": 0.05
+    },
+    "hard_gate_violations": []
+  },
+  "suites": {
+    "attack_paths": {
+      "suite": "attack_paths",
+      "status": "PASSED",
+      "score_pct": 53.33,
+      "duration_seconds": 1.31,
+      "metrics": {
+        "precision": 0.3636,
+        "recall": 1.0,
+        "f1": 0.5333,
+        "exact_match_rate": 1.0,
+        "false_attack_paths_count": 0,
+        "false_attack_path_rate": 0.0
+      },
+      "details": {
+        "verified_paths_evaluated": 4,
+        "predicted_paths_found": 11
+      }
+    }
+  }
+}

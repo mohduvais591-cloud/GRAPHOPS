@@ -1,0 +1,39 @@
+{
+  "id": "doc-009",
+  "category": "ambiguous",
+  "title": "Conditional Routing Policy",
+  "text": "App_Server communicates with Cloud_Storage if proxy is enabled.",
+  "entities": [
+    {
+      "name": "App_Server",
+      "type": "Asset",
+      "aliases": [
+        "Server"
+      ]
+    },
+    {
+      "name": "Cloud_Storage",
+      "type": "Asset",
+      "aliases": [
+        "Storage"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "App_Server",
+      "target": "Cloud_Storage",
+      "type": "COMMUNICATES_WITH",
+      "condition": "proxy enabled"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "App_Server conditional access to Cloud_Storage",
+      "relevant_chunks": [
+        "doc-009"
+      ]
+    }
+  ]
+}

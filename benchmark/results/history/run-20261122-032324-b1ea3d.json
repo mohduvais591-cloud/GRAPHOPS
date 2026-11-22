@@ -1,0 +1,48 @@
+{
+  "run_id": "run-20261122-032324-b1ea3d",
+  "dataset_name": "v0.1",
+  "success": true,
+  "total_duration_seconds": 1.34,
+  "environment": {
+    "timestamp_utc": "2026-11-22T03:23:25.515113+00:00",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python_version": "3.14.6",
+    "git_commit": "615931f74a50449579ac1496cae842cf23d56b52"
+  },
+  "scoring": {
+    "composite_score_pct": 100.0,
+    "breakdown": {
+      "performance": 100.0
+    },
+    "weights": {
+      "functional": 0.15,
+      "extraction": 0.1,
+      "relationships": 0.15,
+      "attack_paths": 0.2,
+      "citations": 0.15,
+      "retrieval": 0.1,
+      "security": 0.1,
+      "performance": 0.05
+    },
+    "hard_gate_violations": []
+  },
+  "suites": {
+    "performance": {
+      "suite": "performance",
+      "status": "PASSED",
+      "score_pct": 100.0,
+      "duration_seconds": 1.34,
+      "metrics": {
+        "documents_processed": 50,
+        "latency_p50_ms": 0.14,
+        "latency_p95_ms": 0.32,
+        "throughput_docs_per_sec": 3193.23,
+        "traversal_latency_avg_ms": 0.14,
+        "sla_60s_breaches": 0
+      },
+      "details": {
+        "sla_status": "PASSED"
+      }
+    }
+  }
+}

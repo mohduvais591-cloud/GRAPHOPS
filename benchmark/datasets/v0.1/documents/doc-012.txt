@@ -1,0 +1,1 @@
+Scanner_Node communicates with Bastion_Host if port 22 is open.

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRAPHOPS Benchmark Dashboard — run-20261122-032321-5a968c</title>
+    <style>
+        :root {
+            --bg: #090d16;
+            --surface: #111827;
+            --border: #1f2937;
+            --text: #f9fafb;
+            --text-dim: #9ca3af;
+            --accent: #3b82f6;
+            --pass: #10b981;
+            --fail: #ef4444;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 32px 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+        }
+        .title h1 {
+            margin: 0 0 8px 0;
+            font-size: 26px;
+            letter-spacing: -0.5px;
+        }
+        .meta {
+            color: var(--text-dim);
+            font-size: 13px;
+        }
+        .score-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin-bottom: 24px;
+        }
+        .score-item {
+            text-align: center;
+        }
+        .score-val {
+            font-size: 42px;
+            font-weight: 800;
+            color: #16a34a;
+            margin-top: 4px;
+        }
+        .score-lbl {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge-pass {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--pass);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .badge-fail {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--fail);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+        }
+        .alert h3 {
+            margin-top: 0;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        th {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">
+                <h1>🛡️ GRAPHOPS Independent Quality & Security Benchmark</h1>
+                <div class="meta">
+                    Run ID: <code>run-20261122-032321-5a968c</code> &bull; Commit: <code>615931f7</code> &bull; Platform: Windows-11-10.0.26300-SP0
+                </div>
+            </div>
+            <div>
+                <span class="badge badge-pass" style="font-size: 14px; padding: 8px 16px;">
+                    PASSED
+                </span>
+            </div>
+        </div>
+
+        <div class="score-card">
+            <div class="score-item">
+                <div class="score-lbl">Composite Score</div>
+                <div class="score-val">100.0%</div>
+            </div>
+            <div class="score-item">
+                <div class="score-lbl">Suites Evaluated</div>
+                <div class="score-val" style="color: var(--text);">1</div>
+            </div>
+            <div class="score-item">
+                <div class="score-lbl">Total Runtime</div>
+                <div class="score-val" style="color: var(--text);">1.99s</div>
+            </div>
+        </div>
+
+        
+        <div class="alert alert-success">
+            <h3>🛡️ Hard Security & Integrity Gates: ALL PASSED</h3>
+            <p>Zero cross-workspace data leakage, zero unauthorized escalations, zero fabricated citations, and zero unverified attack paths.</p>
+        </div>
+        
+
+        <h2>Suite Breakdown & Contributions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Suite</th>
+                    <th>Status</th>
+                    <th>Score / Pass Rate</th>
+                    <th>Weight</th>
+                    <th>Contribution</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        <tr>
+            <td><strong>Security</strong></td>
+            <td><span class="badge badge-pass">PASSED</span></td>
+            <td>100.0%</td>
+            <td>10%</td>
+            <td><strong>10.00%</strong></td>
+            <td>1.99s</td>
+        </tr>
+        
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

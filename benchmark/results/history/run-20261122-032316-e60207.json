@@ -1,0 +1,47 @@
+{
+  "run_id": "run-20261122-032316-e60207",
+  "dataset_name": "v0.1",
+  "success": true,
+  "total_duration_seconds": 1.6,
+  "environment": {
+    "timestamp_utc": "2026-11-22T03:23:18.535893+00:00",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python_version": "3.14.6",
+    "git_commit": "615931f74a50449579ac1496cae842cf23d56b52"
+  },
+  "scoring": {
+    "composite_score_pct": 100.0,
+    "breakdown": {
+      "citations": 100.0
+    },
+    "weights": {
+      "functional": 0.15,
+      "extraction": 0.1,
+      "relationships": 0.15,
+      "attack_paths": 0.2,
+      "citations": 0.15,
+      "retrieval": 0.1,
+      "security": 0.1,
+      "performance": 0.05
+    },
+    "hard_gate_violations": []
+  },
+  "suites": {
+    "citations": {
+      "suite": "citations",
+      "status": "PASSED",
+      "score_pct": 100.0,
+      "duration_seconds": 1.6,
+      "metrics": {
+        "citation_coverage": 0.05,
+        "citation_precision": 1.0,
+        "unsupported_claim_rate": 0.95,
+        "fabricated_citation_rate": 0.0,
+        "fabricated_count": 0
+      },
+      "details": {
+        "claims_evaluated": 20
+      }
+    }
+  }
+}

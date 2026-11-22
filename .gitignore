@@ -56,3 +56,5 @@ Phase2/benchmark/generated_corpus/
 **/bench_storage/
 **/generated_corpus/
 .neon
+reports/
+

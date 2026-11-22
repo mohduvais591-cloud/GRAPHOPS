@@ -1,0 +1,1 @@
+Primary_Database communicates with Replication_Worker. Replication_Worker accesses Read_Replica.

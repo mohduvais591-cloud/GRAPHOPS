@@ -1,0 +1,69 @@
+{
+  "id": "doc-002",
+  "category": "normal",
+  "title": "Kubernetes Ingress and Microservices",
+  "text": "External_Client communicates with Ingress_Controller. Ingress_Controller communicates with Payment_Pod. Payment_Pod accesses Vault_Cluster.",
+  "entities": [
+    {
+      "name": "External_Client",
+      "type": "Asset",
+      "aliases": [
+        "Client"
+      ]
+    },
+    {
+      "name": "Ingress_Controller",
+      "type": "Asset",
+      "aliases": [
+        "Ingress"
+      ]
+    },
+    {
+      "name": "Payment_Pod",
+      "type": "Asset",
+      "aliases": [
+        "Payment"
+      ]
+    },
+    {
+      "name": "Vault_Cluster",
+      "type": "Asset",
+      "aliases": [
+        "Vault"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "External_Client",
+      "target": "Ingress_Controller",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "Ingress_Controller",
+      "target": "Payment_Pod",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "Payment_Pod",
+      "target": "Vault_Cluster",
+      "type": "ACCESSES"
+    }
+  ],
+  "attack_paths": [
+    [
+      "External_Client",
+      "Ingress_Controller",
+      "Payment_Pod",
+      "Vault_Cluster"
+    ]
+  ],
+  "questions": [
+    {
+      "query": "What component does Payment_Pod access?",
+      "relevant_chunks": [
+        "doc-002"
+      ]
+    }
+  ]
+}

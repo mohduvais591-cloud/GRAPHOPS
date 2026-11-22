@@ -1,0 +1,52 @@
+{
+  "run_id": "run-20261122-032011-e45a6d",
+  "dataset_name": "v0.1",
+  "success": false,
+  "total_duration_seconds": 1.82,
+  "environment": {
+    "timestamp_utc": "2026-11-22T03:20:13.464829+00:00",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python_version": "3.14.6",
+    "git_commit": "615931f74a50449579ac1496cae842cf23d56b52"
+  },
+  "scoring": {
+    "composite_score_pct": 0.78,
+    "breakdown": {
+      "extraction": 0.78
+    },
+    "weights": {
+      "functional": 0.15,
+      "extraction": 0.1,
+      "relationships": 0.15,
+      "attack_paths": 0.2,
+      "citations": 0.15,
+      "retrieval": 0.1,
+      "security": 0.1,
+      "performance": 0.05
+    },
+    "hard_gate_violations": []
+  },
+  "suites": {
+    "extraction": {
+      "suite": "extraction",
+      "status": "FAILED",
+      "score_pct": 0.78,
+      "duration_seconds": 1.82,
+      "metrics": {
+        "entity_precision": 0.0143,
+        "entity_recall": 0.0172,
+        "entity_f1": 0.0156,
+        "relationship_precision": 0.0,
+        "relationship_recall": 0.0,
+        "relationship_f1": 0.0,
+        "combined_extraction_score": 0.78
+      },
+      "details": {
+        "total_gt_entities": 58,
+        "total_pred_entities": 70,
+        "total_gt_relationships": 37,
+        "total_pred_relationships": 36
+      }
+    }
+  }
+}

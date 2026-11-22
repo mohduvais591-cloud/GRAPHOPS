@@ -1,0 +1,39 @@
+{
+  "id": "doc-014",
+  "category": "contradiction",
+  "title": "Independent Research Finding Beta",
+  "text": "Gateway_Patch does not mitigate CVE-2024-4577.",
+  "entities": [
+    {
+      "name": "Gateway_Patch",
+      "type": "Asset",
+      "aliases": [
+        "Patch"
+      ]
+    },
+    {
+      "name": "CVE-2024-4577",
+      "type": "Vulnerability",
+      "aliases": [
+        "PHP CGI"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Gateway_Patch",
+      "target": "CVE-2024-4577",
+      "type": "MITIGATES",
+      "negated": true
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Gateway_Patch dispute regarding CVE-2024-4577",
+      "relevant_chunks": [
+        "doc-014"
+      ]
+    }
+  ]
+}

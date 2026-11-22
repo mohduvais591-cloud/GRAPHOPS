@@ -1,0 +1,39 @@
+{
+  "id": "doc-010",
+  "category": "ambiguous",
+  "title": "Uncertain Lateral Movement Log",
+  "text": "Host_A may access Host_B if authentication succeeds.",
+  "entities": [
+    {
+      "name": "Host_A",
+      "type": "Asset",
+      "aliases": [
+        "A"
+      ]
+    },
+    {
+      "name": "Host_B",
+      "type": "Asset",
+      "aliases": [
+        "B"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Host_A",
+      "target": "Host_B",
+      "type": "ACCESSES",
+      "condition": "unconfirmed"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Is Host_A access to Host_B verified?",
+      "relevant_chunks": [
+        "doc-010"
+      ]
+    }
+  ]
+}

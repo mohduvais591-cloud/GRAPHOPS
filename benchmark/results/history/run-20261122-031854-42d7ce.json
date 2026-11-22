@@ -1,0 +1,50 @@
+{
+  "run_id": "run-20261122-031854-42d7ce",
+  "dataset_name": "v0.1",
+  "success": false,
+  "total_duration_seconds": 2.12,
+  "environment": {
+    "timestamp_utc": "2026-11-22T03:18:56.650843+00:00",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "python_version": "3.14.6",
+    "git_commit": "615931f74a50449579ac1496cae842cf23d56b52"
+  },
+  "scoring": {
+    "composite_score_pct": 80.0,
+    "breakdown": {
+      "security": 80.0
+    },
+    "weights": {
+      "functional": 0.15,
+      "extraction": 0.1,
+      "relationships": 0.15,
+      "attack_paths": 0.2,
+      "citations": 0.15,
+      "retrieval": 0.1,
+      "security": 0.1,
+      "performance": 0.05
+    },
+    "hard_gate_violations": [
+      "Unauthorized privileged operation or access success (Hard Gate Failure)"
+    ]
+  },
+  "suites": {
+    "security": {
+      "suite": "security",
+      "status": "FAILED",
+      "score_pct": 80.0,
+      "duration_seconds": 2.12,
+      "metrics": {
+        "total_security_probes": 5,
+        "passed_security_probes": 4,
+        "unauthorized_access_success": 1,
+        "cross_workspace_leakage": 0,
+        "prompt_injection_execution": 0,
+        "security_robustness_score": 80.0
+      },
+      "details": {
+        "hard_gate_clean": false
+      }
+    }
+  }
+}

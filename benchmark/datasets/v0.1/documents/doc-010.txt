@@ -1,0 +1,1 @@
+Host_A may access Host_B if authentication succeeds.

@@ -1,0 +1,1 @@
+Threat_Actor_APT29 exploits CVE-2024-4577. CVE-2024-4577 targets PHP_Gateway. PHP_Gateway communicates with Auth_Service. Auth_Service accesses Banking_Database.

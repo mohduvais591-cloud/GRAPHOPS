@@ -1,0 +1,39 @@
+{
+  "id": "doc-019",
+  "category": "edge_case",
+  "title": "Explicit Negation Boundary",
+  "text": "Public_Bastion does not access Customer_Database.",
+  "entities": [
+    {
+      "name": "Public_Bastion",
+      "type": "Asset",
+      "aliases": [
+        "Bastion"
+      ]
+    },
+    {
+      "name": "Customer_Database",
+      "type": "Asset",
+      "aliases": [
+        "Database"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Public_Bastion",
+      "target": "Customer_Database",
+      "type": "ACCESSES",
+      "negated": true
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Public_Bastion access to Customer_Database",
+      "relevant_chunks": [
+        "doc-019"
+      ]
+    }
+  ]
+}

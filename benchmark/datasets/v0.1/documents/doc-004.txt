@@ -1,0 +1,1 @@
+Checkout_Service communicates with Tokenization_Vault. Tokenization_Vault accesses Hardware_Security_Module.

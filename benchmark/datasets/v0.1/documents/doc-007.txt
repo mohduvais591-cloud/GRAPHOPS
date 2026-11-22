@@ -1,0 +1,1 @@
+Endpoint_Agent communicates with Kafka_Broker. Kafka_Broker communicates with SIEM_Indexer.

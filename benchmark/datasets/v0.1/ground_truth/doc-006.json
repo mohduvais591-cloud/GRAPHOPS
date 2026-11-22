@@ -1,0 +1,68 @@
+{
+  "id": "doc-006",
+  "category": "normal",
+  "title": "Vulnerability Advisory: CVE-2024-38077",
+  "text": "Remote_Attacker exploits CVE-2024-38077. CVE-2024-38077 targets RDL_Service. RDL_Service accesses Domain_Controller.",
+  "entities": [
+    {
+      "name": "Remote_Attacker",
+      "type": "ThreatActor",
+      "aliases": [
+        "Attacker"
+      ]
+    },
+    {
+      "name": "CVE-2024-38077",
+      "type": "Vulnerability",
+      "aliases": [
+        "MadLicence"
+      ]
+    },
+    {
+      "name": "RDL_Service",
+      "type": "Asset",
+      "aliases": [
+        "Licensing"
+      ]
+    },
+    {
+      "name": "Domain_Controller",
+      "type": "Asset",
+      "aliases": [
+        "DC"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Remote_Attacker",
+      "target": "CVE-2024-38077",
+      "type": "EXPLOITS"
+    },
+    {
+      "source": "CVE-2024-38077",
+      "target": "RDL_Service",
+      "type": "TARGETS"
+    },
+    {
+      "source": "RDL_Service",
+      "target": "Domain_Controller",
+      "type": "ACCESSES"
+    }
+  ],
+  "attack_paths": [
+    [
+      "CVE-2024-38077",
+      "RDL_Service",
+      "Domain_Controller"
+    ]
+  ],
+  "questions": [
+    {
+      "query": "Target asset of CVE-2024-38077",
+      "relevant_chunks": [
+        "doc-006"
+      ]
+    }
+  ]
+}

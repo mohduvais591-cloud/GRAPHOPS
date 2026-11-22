@@ -1,0 +1,73 @@
+{
+  "id": "doc-001",
+  "category": "normal",
+  "title": "Cloud Identity & Access Architecture",
+  "text": "Cloud_IDP communicates with Public_Gateway. Public_Gateway communicates with IAM_Service. IAM_Service accesses Internal_Database.",
+  "entities": [
+    {
+      "name": "Cloud_IDP",
+      "type": "Asset",
+      "aliases": [
+        "IDP",
+        "Cloud"
+      ]
+    },
+    {
+      "name": "Public_Gateway",
+      "type": "Asset",
+      "aliases": [
+        "Gateway",
+        "Public"
+      ]
+    },
+    {
+      "name": "IAM_Service",
+      "type": "Asset",
+      "aliases": [
+        "IAM",
+        "Service"
+      ]
+    },
+    {
+      "name": "Internal_Database",
+      "type": "Asset",
+      "aliases": [
+        "Database",
+        "Internal"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Cloud_IDP",
+      "target": "Public_Gateway",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "Public_Gateway",
+      "target": "IAM_Service",
+      "type": "COMMUNICATES_WITH"
+    },
+    {
+      "source": "IAM_Service",
+      "target": "Internal_Database",
+      "type": "ACCESSES"
+    }
+  ],
+  "attack_paths": [
+    [
+      "Cloud_IDP",
+      "Public_Gateway",
+      "IAM_Service",
+      "Internal_Database"
+    ]
+  ],
+  "questions": [
+    {
+      "query": "Public_Gateway communication path to Internal_Database",
+      "relevant_chunks": [
+        "doc-001"
+      ]
+    }
+  ]
+}

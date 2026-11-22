@@ -1,0 +1,214 @@
+{
+  "dataset_name": "v0.1",
+  "description": "GRAPHOPS Ground-Truth Benchmark Dataset (20 verified documents)",
+  "total_documents": 20,
+  "composition": {
+    "normal": 8,
+    "ambiguous": 4,
+    "contradiction": 3,
+    "adversarial": 3,
+    "edge_case": 2
+  },
+  "records": [
+    {
+      "id": "doc-001",
+      "title": "Cloud Identity & Access Architecture",
+      "category": "normal",
+      "doc_file": "doc-001.txt",
+      "gt_file": "doc-001.json",
+      "entity_count": 4,
+      "relationship_count": 3,
+      "attack_path_count": 1
+    },
+    {
+      "id": "doc-002",
+      "title": "Kubernetes Ingress and Microservices",
+      "category": "normal",
+      "doc_file": "doc-002.txt",
+      "gt_file": "doc-002.json",
+      "entity_count": 4,
+      "relationship_count": 3,
+      "attack_path_count": 1
+    },
+    {
+      "id": "doc-003",
+      "title": "Database Replication Architecture",
+      "category": "normal",
+      "doc_file": "doc-003.txt",
+      "gt_file": "doc-003.json",
+      "entity_count": 3,
+      "relationship_count": 2,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-004",
+      "title": "Payment Tokenization Boundary",
+      "category": "normal",
+      "doc_file": "doc-004.txt",
+      "gt_file": "doc-004.json",
+      "entity_count": 3,
+      "relationship_count": 2,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-005",
+      "title": "Threat Actor Profile: APT29",
+      "category": "normal",
+      "doc_file": "doc-005.txt",
+      "gt_file": "doc-005.json",
+      "entity_count": 5,
+      "relationship_count": 4,
+      "attack_path_count": 1
+    },
+    {
+      "id": "doc-006",
+      "title": "Vulnerability Advisory: CVE-2024-38077",
+      "category": "normal",
+      "doc_file": "doc-006.txt",
+      "gt_file": "doc-006.json",
+      "entity_count": 4,
+      "relationship_count": 3,
+      "attack_path_count": 1
+    },
+    {
+      "id": "doc-007",
+      "title": "SIEM Ingestion Flow",
+      "category": "normal",
+      "doc_file": "doc-007.txt",
+      "gt_file": "doc-007.json",
+      "entity_count": 3,
+      "relationship_count": 2,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-008",
+      "title": "CI/CD Pipeline Architecture",
+      "category": "normal",
+      "doc_file": "doc-008.txt",
+      "gt_file": "doc-008.json",
+      "entity_count": 3,
+      "relationship_count": 2,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-009",
+      "title": "Conditional Routing Policy",
+      "category": "ambiguous",
+      "doc_file": "doc-009.txt",
+      "gt_file": "doc-009.json",
+      "entity_count": 2,
+      "relationship_count": 1,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-010",
+      "title": "Uncertain Lateral Movement Log",
+      "category": "ambiguous",
+      "doc_file": "doc-010.txt",
+      "gt_file": "doc-010.json",
+      "entity_count": 2,
+      "relationship_count": 1,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-011",
+      "title": "Contingent Exploitability Bulletin",
+      "category": "ambiguous",
+      "doc_file": "doc-011.txt",
+      "gt_file": "doc-011.json",
+      "entity_count": 2,
+      "relationship_count": 1,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-012",
+      "title": "Incomplete Sensor Log",
+      "category": "ambiguous",
+      "doc_file": "doc-012.txt",
+      "gt_file": "doc-012.json",
+      "entity_count": 2,
+      "relationship_count": 1,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-013",
+      "title": "Vendor Patch Assessment Alpha",
+      "category": "contradiction",
+      "doc_file": "doc-013.txt",
+      "gt_file": "doc-013.json",
+      "entity_count": 2,
+      "relationship_count": 1,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-014",
+      "title": "Independent Research Finding Beta",
+      "category": "contradiction",
+      "doc_file": "doc-014.txt",
+      "gt_file": "doc-014.json",
+      "entity_count": 2,
+      "relationship_count": 1,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-015",
+      "title": "Threat Attribution Conflict",
+      "category": "contradiction",
+      "doc_file": "doc-015.txt",
+      "gt_file": "doc-015.json",
+      "entity_count": 3,
+      "relationship_count": 2,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-016",
+      "title": "Log Snippet with Direct Instruction Injection",
+      "category": "adversarial",
+      "doc_file": "doc-016.txt",
+      "gt_file": "doc-016.json",
+      "entity_count": 2,
+      "relationship_count": 1,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-017",
+      "title": "XML Document with Comment Hijack",
+      "category": "adversarial",
+      "doc_file": "doc-017.txt",
+      "gt_file": "doc-017.json",
+      "entity_count": 2,
+      "relationship_count": 1,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-018",
+      "title": "Vulnerability Title Script Injection",
+      "category": "adversarial",
+      "doc_file": "doc-018.txt",
+      "gt_file": "doc-018.json",
+      "entity_count": 2,
+      "relationship_count": 1,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-019",
+      "title": "Explicit Negation Boundary",
+      "category": "edge_case",
+      "doc_file": "doc-019.txt",
+      "gt_file": "doc-019.json",
+      "entity_count": 2,
+      "relationship_count": 1,
+      "attack_path_count": 0
+    },
+    {
+      "id": "doc-020",
+      "title": "Cyclic Forwarding Mesh",
+      "category": "edge_case",
+      "doc_file": "doc-020.txt",
+      "gt_file": "doc-020.json",
+      "entity_count": 3,
+      "relationship_count": 3,
+      "attack_path_count": 0
+    }
+  ]
+}

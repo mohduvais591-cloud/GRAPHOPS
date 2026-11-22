@@ -1,0 +1,1 @@
+Vendor_A claims APT28 targets Alpha_Network. Vendor_B claims Turla targets Alpha_Network.

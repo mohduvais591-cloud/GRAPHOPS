@@ -1,0 +1,39 @@
+{
+  "id": "doc-011",
+  "category": "ambiguous",
+  "title": "Contingent Exploitability Bulletin",
+  "text": "Attacker exploits CVE-2024-1189 if debug flag is set.",
+  "entities": [
+    {
+      "name": "Attacker",
+      "type": "ThreatActor",
+      "aliases": [
+        "Adversary"
+      ]
+    },
+    {
+      "name": "CVE-2024-1189",
+      "type": "Vulnerability",
+      "aliases": [
+        "Vulnerability"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "Attacker",
+      "target": "CVE-2024-1189",
+      "type": "EXPLOITS",
+      "condition": "debug flag"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Can CVE-2024-1189 be exploited when debug is off?",
+      "relevant_chunks": [
+        "doc-011"
+      ]
+    }
+  ]
+}

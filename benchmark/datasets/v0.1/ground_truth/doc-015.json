@@ -1,0 +1,50 @@
+{
+  "id": "doc-015",
+  "category": "contradiction",
+  "title": "Threat Attribution Conflict",
+  "text": "Vendor_A claims APT28 targets Alpha_Network. Vendor_B claims Turla targets Alpha_Network.",
+  "entities": [
+    {
+      "name": "APT28",
+      "type": "ThreatActor",
+      "aliases": [
+        "Fancy Bear"
+      ]
+    },
+    {
+      "name": "Turla",
+      "type": "ThreatActor",
+      "aliases": [
+        "Snake"
+      ]
+    },
+    {
+      "name": "Alpha_Network",
+      "type": "Asset",
+      "aliases": [
+        "Alpha"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "APT28",
+      "target": "Alpha_Network",
+      "type": "TARGETS"
+    },
+    {
+      "source": "Turla",
+      "target": "Alpha_Network",
+      "type": "TARGETS"
+    }
+  ],
+  "attack_paths": [],
+  "questions": [
+    {
+      "query": "Who targets Alpha_Network?",
+      "relevant_chunks": [
+        "doc-015"
+      ]
+    }
+  ]
+}

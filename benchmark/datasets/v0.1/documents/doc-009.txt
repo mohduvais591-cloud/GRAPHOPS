@@ -1,0 +1,1 @@
+App_Server communicates with Cloud_Storage if proxy is enabled.

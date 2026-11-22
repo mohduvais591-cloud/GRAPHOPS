@@ -1,0 +1,1 @@
+External_Client communicates with Ingress_Controller. Ingress_Controller communicates with Payment_Pod. Payment_Pod accesses Vault_Cluster.
