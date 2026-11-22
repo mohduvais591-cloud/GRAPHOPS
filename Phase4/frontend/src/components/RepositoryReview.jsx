@@ -60,7 +60,7 @@ export default function RepositoryReview({ workspaceId, canWrite }) {
   }
   function download() {
     const objectUrl = URL.createObjectURL(new Blob([JSON.stringify(current, null, 2)], { type: 'application/json' }))
-    const anchor = document.createElement('a'); anchor.href = objectUrl; anchor.download = 'aegisgraph-repository-review.json'; anchor.click()
+    const anchor = document.createElement('a'); anchor.href = objectUrl; anchor.download = 'graphops-repository-review.json'; anchor.click()
     setTimeout(() => URL.revokeObjectURL(objectUrl), 1000)
   }
   const dateLabel = value => new Date(value).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })

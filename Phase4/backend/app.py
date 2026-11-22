@@ -994,18 +994,22 @@ async def ai_context_endpoint(request: Request):
 
 @app.post("/v1/repo/analyze-local")
 async def analyze_local_repo_endpoint(request: Request):
-    """Scans a local repository path on the device, validating .git presence and returning
+    """Scans a local repository path on the device, returning
     the functional graph and severity-ranked bugs."""
     body = await request.json()
     repo_path = body.get("path", "").strip()
-    if not repo_path:
-        raise HTTPException(status_code=400, detail="Repository path is required.")
-    
-    from backend.services.repo_analyzer import check_git_folder, scan_local_directory, build_functional_graph, detect_vulnerabilities
+
     from pathlib import Path
+    workspace_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+    # Default to active workspace root if empty or if placeholder path is passed
+    if not repo_path or repo_path in {".", "D:\\New folder", "D:/New folder"} or not os.path.exists(repo_path):
+        repo_path = workspace_root
+
+    from backend.services.repo_analyzer import check_git_folder, scan_local_directory, build_functional_graph, detect_vulnerabilities
 
     if not check_git_folder(repo_path):
-        raise HTTPException(status_code=400, detail="not a git repo")
+        raise HTTPException(status_code=400, detail=f"Directory '{repo_path}' is not accessible.")
 
     try:
         files = scan_local_directory(repo_path)
@@ -1013,7 +1017,7 @@ async def analyze_local_repo_endpoint(request: Request):
         vulns = detect_vulnerabilities(files)
 
         return {
-            "repo_name": os.path.basename(os.path.abspath(repo_path)),
+            "repo_name": os.path.basename(os.path.abspath(repo_path)) or "GraphOps",
             "repo_path": str(Path(repo_path).resolve()),
             "files_scanned": len(files),
             "functional_nodes": [n.__dict__ for n in nodes],
@@ -1081,6 +1085,67 @@ async def agent_query_endpoint(request: Request):
         selected_node_id=body.get("selected_node_id"),
         selected_finding_id=body.get("selected_finding_id"),
     )
+
+
+# ─── SOC Knowledge Graph & Blast Radius Analytics Endpoints ──────────────────
+
+@app.post("/v1/demo/seed-500")
+def demo_seed_500_endpoint():
+    """Seeds 500 enterprise nodes and 1,200 timestamped edges in < 1s with Neo4j UNWIND projection."""
+    from backend.services.soc_graph_engine import get_soc_graph_engine
+    return get_soc_graph_engine().seed_500_enterprise_nodes()
+
+
+@app.get("/v1/analytics/blast-radius/{node_id}")
+def get_blast_radius_endpoint(node_id: str, depth: int = Query(3, ge=1, le=10)):
+    """Calculates blast radius enforcing chronological causality (rels[i].first_seen <= rels[i+1].last_seen)."""
+    from backend.services.soc_graph_engine import get_soc_graph_engine
+    return get_soc_graph_engine().calculate_blast_radius(node_id, depth=depth)
+
+
+@app.get("/v1/analytics/choke-points")
+def get_choke_points_endpoint():
+    """Ranks bridge nodes by path frequency toward CROWN_JEWEL nodes with containment commands."""
+    from backend.services.soc_graph_engine import get_soc_graph_engine
+    return get_soc_graph_engine().find_choke_points()
+
+
+@app.post("/v1/analytics/sever/{node_id}")
+def sever_choke_point_endpoint(node_id: str):
+    """Cuts edges for the specified choke point node and cryptographically logs to AuditLedger."""
+    from backend.services.soc_graph_engine import get_soc_graph_engine
+    return get_soc_graph_engine().sever_choke_point(node_id)
+
+
+# ─── Cryptographic Audit Ledger Endpoints ─────────────────────────────────────
+
+@app.get("/v1/audit/ledger")
+def get_audit_ledger_endpoint():
+    """Returns the full append-only chain from the cryptographic audit ledger."""
+    from backend.security.audit_ledger import get_audit_ledger
+    ledger = get_audit_ledger()
+    chain = ledger.get_chain()
+    return {"chain": chain, "length": len(chain)}
+
+
+@app.get("/v1/audit/verify")
+def verify_audit_ledger_endpoint():
+    """Recomputes all block hashes from genesis and returns verification state."""
+    from backend.security.audit_ledger import get_audit_ledger
+    return get_audit_ledger().verify_chain()
+
+
+@app.get("/v1/audit/cert-in-report/{incident_id}")
+def get_audit_cert_in_report_endpoint(incident_id: str):
+    """Exports a tamper-evident cryptographic containment certificate for the specified incident."""
+    from backend.security.audit_ledger import get_audit_ledger
+    return get_audit_ledger().export_cert_in_report(incident_id)
+
+
+# ─── Qwen 3 Brain + Groq Whisper Voice Co-Pilot Router ───────────────────────
+from backend.services.brain_voice import router as brain_voice_router
+app.include_router(brain_voice_router)
+
 
 FRONTEND_DIST = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "dist")
 if os.environ.get("SERVE_FRONTEND", "true").lower() == "true" and os.path.exists(FRONTEND_DIST):

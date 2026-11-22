@@ -85,7 +85,7 @@ export default function AuthGate({ children }) {
   return (
     <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: 24 }}>
       <section className="glass-card" style={{ width: '100%', maxWidth: 420 }}>
-        <h1>AegisGraph AI</h1>
+        <h1>GraphOps</h1>
         <p style={{ color: 'var(--text-secondary)', margin: '16px 0' }}>{register ? 'Create your account. An administrator assigns workspace access.' : 'Sign in to your security workspace.'}</p>
         {busy && <p role="status">Checking your session…</p>}
         {notice && <p role="status">{notice}</p>}

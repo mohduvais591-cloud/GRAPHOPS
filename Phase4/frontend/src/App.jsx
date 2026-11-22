@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import GraphCanvas from './components/GraphCanvas';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
@@ -23,7 +24,7 @@ const SEVERITY_CONFIG = {
 };
 
 const WISPR_VOCABULARY = [
-  'AegisGraph', 'Qwen 3', 'Neo4j', 'Ollama', 'FastAPI', 'ChromaDB',
+  'GraphOps', 'Qwen 3', 'Neo4j', 'Ollama', 'FastAPI', 'ChromaDB',
   'AST', 'call graph', 'dependency graph', 'blast radius', 'source-to-sink',
   'test impact', 'middleware', 'route handler', 'Supabase', 'TypeScript',
   'React', 'Vite', 'evidence object', 'Change Safety Report',
@@ -651,7 +652,7 @@ function MinimalGraphCanvas({
 export default function App() {
   const [screen, setScreen] = useState('login'); // 'login' | 'connect' | 'analyzing' | 'workspace'
   const [user, setUser] = useState({ name: 'Developer', email: 'dev@local' });
-  const [repoPathInput, setRepoPathInput] = useState('D:\\New folder');
+  const [repoPathInput, setRepoPathInput] = useState('.');
   const [repoZipFile, setRepoZipFile] = useState(null);
   const [analysisStage, setAnalysisStage] = useState(0);
   const [analysisError, setAnalysisError] = useState(null);
@@ -677,7 +678,7 @@ export default function App() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: 'Welcome to AegisGraph AI. Ask me anything about the codebase architecture, dataflow, or security posture.',
+      content: 'Welcome to GraphOps. Ask me anything about the codebase architecture, dataflow, or security posture.',
     },
   ]);
   const [inputQuery, setInputQuery] = useState('');
@@ -885,7 +886,7 @@ export default function App() {
             <div style={{ width: 28, height: 28, background: '#111111', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF', fontWeight: 800, fontSize: 14 }}>
               A
             </div>
-            <h1 style={{ fontSize: 18, fontWeight: 700, color: '#111111' }}>AegisGraph AI</h1>
+            <h1 style={{ fontSize: 18, fontWeight: 700, color: '#111111' }}>GraphOps</h1>
           </div>
           <p style={{ fontSize: 13, color: '#666666', marginBottom: 24, lineHeight: 1.5 }}>
             Evidence-Backed Code Intelligence, 4-Mode Interactive Graph, Wispr Flow Dictation & Local Qwen 3 Agent.
@@ -923,7 +924,7 @@ export default function App() {
             <div style={{ width: 22, height: 22, background: '#111111', borderRadius: 5, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFF', fontWeight: 800, fontSize: 11 }}>
               A
             </div>
-            <span style={{ fontSize: 14, fontWeight: 700, color: '#111111' }}>AegisGraph</span>
+            <span style={{ fontSize: 14, fontWeight: 700, color: '#111111' }}>GraphOps</span>
           </div>
           <span style={{ fontSize: 12, color: '#666666' }}>Logged in as <strong>{user.name}</strong></span>
         </header>
@@ -939,21 +940,30 @@ export default function App() {
 
             <div style={{ marginBottom: 20 }}>
               <label style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: '#555555', display: 'block', marginBottom: 6 }}>
-                Local Folder Path (.git required)
+                Local Folder Path
               </label>
               <input
                 type="text"
                 value={repoPathInput}
                 onChange={(e) => { setRepoPathInput(e.target.value); setRepoZipFile(null); }}
-                placeholder="e.g. D:\New folder"
+                placeholder="e.g. . (Current Workspace)"
                 style={{ width: '100%', padding: '10px 12px', border: '1px solid #CCCCCC', borderRadius: 6, fontSize: 13, fontFamily: 'JetBrains Mono, monospace' }}
               />
-              <div style={{ fontSize: 11, color: '#888888', marginTop: 4 }}>
-                Current workspace default: <code>D:\New folder</code>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 6 }}>
+                <span style={{ fontSize: 11, color: '#888888' }}>
+                  Workspace default: <code>. (Current Workspace)</code>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => { setRepoPathInput('.'); setRepoZipFile(null); }}
+                  style={{ fontSize: 10, padding: '2px 8px', background: '#e0f2fe', color: '#0369a1', border: '1px solid #bae6fd', borderRadius: 4, cursor: 'pointer', fontWeight: 600 }}
+                >
+                  ⚡ Auto-Fill Current Workspace
+                </button>
               </div>
             </div>
 
-            <div style={{ marginBottom: 24 }}>
+            <div style={{ marginBottom: 20 }}>
               <label style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: '#555555', display: 'block', marginBottom: 6 }}>
                 Or Upload Repository ZIP
               </label>
@@ -970,17 +980,29 @@ export default function App() {
               )}
             </div>
 
-            <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8, padding: 12, marginBottom: 24, fontSize: 11.5, color: '#475569', lineHeight: 1.5 }}>
+            <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 8, padding: 12, marginBottom: 20, fontSize: 11.5, color: '#475569', lineHeight: 1.5 }}>
               <div>🛡️ <strong>Passive Read-Only Mode:</strong> Source files are parsed into AST and regex tokens; no code is run or modified.</div>
               <div style={{ marginTop: 4 }}>📁 <strong>Automatically excluded:</strong> <code>.git</code>, <code>node_modules</code>, <code>.venv</code>, <code>dist</code>, <code>build</code>.</div>
             </div>
 
-            <button
-              onClick={runAnalysis}
-              style={{ width: '100%', background: '#111111', color: '#FFFFFF', padding: '11px 16px', borderRadius: 6, fontSize: 13, fontWeight: 600 }}
-            >
-              Start Repository Analysis →
-            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <button
+                onClick={runAnalysis}
+                style={{ width: '100%', background: '#111111', color: '#FFFFFF', padding: '11px 16px', borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+              >
+                Start Repository Analysis →
+              </button>
+              <button
+                onClick={() => {
+                  setRepoData({ repo_name: 'GraphOps-SOC', functional_nodes: [], functional_edges: [], vulnerabilities: [] });
+                  setActiveTab('soc-hunter');
+                  setScreen('workspace');
+                }}
+                style={{ width: '100%', background: '#0284c7', color: '#FFFFFF', padding: '11px 16px', borderRadius: 6, fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer' }}
+              >
+                🎯 Direct Launch: SOC Threat Hunting Workbench (500 Nodes / AuraDB) →
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -992,7 +1014,7 @@ export default function App() {
   // ════════════════════════════════════════════════════════════════════════════
   if (screen === 'analyzing') {
     const stages = [
-      'Scanning local files & verifying .git repository',
+      'Scanning local files & verifying directory structure',
       'Parsing source tree with AST and language lexers',
       'Synthesizing Functional Knowledge Graph',
       'Executing static vulnerability priority engine',
@@ -1001,7 +1023,7 @@ export default function App() {
 
     return (
       <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FFFFFF' }}>
-        <div style={{ width: 480, border: '1px solid #E5E5E5', borderRadius: 12, padding: 32, boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+        <div style={{ width: 500, border: '1px solid #E5E5E5', borderRadius: 12, padding: 32, boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
           <h2 style={{ fontSize: 18, fontWeight: 700, color: '#111111', marginBottom: 8 }}>
             Analyzing Repository…
           </h2>
@@ -1010,12 +1032,28 @@ export default function App() {
           </p>
 
           {analysisError ? (
-            <div style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', color: '#DC2626', padding: 12, borderRadius: 8, fontSize: 12, marginBottom: 20 }}>
+            <div style={{ background: '#FEF2F2', border: '1px solid #FCA5A5', color: '#DC2626', padding: 16, borderRadius: 8, fontSize: 12, marginBottom: 20 }}>
               <strong>Analysis Error:</strong> {analysisError}
-              <div style={{ marginTop: 12 }}>
+              <div style={{ marginTop: 14, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => { setRepoPathInput('.'); setTimeout(() => runAnalysis(), 50); }}
+                  style={{ background: '#0284c7', color: '#FFFFFF', padding: '8px 14px', borderRadius: 6, fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer' }}
+                >
+                  ⚡ Scan Current Workspace (.)
+                </button>
+                <button
+                  onClick={() => {
+                    setRepoData({ repo_name: 'GraphOps-SOC', functional_nodes: [], functional_edges: [], vulnerabilities: [] });
+                    setActiveTab('soc-hunter');
+                    setScreen('workspace');
+                  }}
+                  style={{ background: '#7c3aed', color: '#FFFFFF', padding: '8px 14px', borderRadius: 6, fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer' }}
+                >
+                  🎯 Open SOC Threat Hunter
+                </button>
                 <button
                   onClick={() => setScreen('connect')}
-                  style={{ background: '#DC2626', color: '#FFFFFF', padding: '6px 12px', borderRadius: 6, fontSize: 12, fontWeight: 600 }}
+                  style={{ background: '#DC2626', color: '#FFFFFF', padding: '8px 14px', borderRadius: 6, fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer' }}
                 >
                   ← Return & Change Path
                 </button>
@@ -1106,7 +1144,7 @@ export default function App() {
               A
             </div>
             <span style={{ fontSize: 14, fontWeight: 700, color: '#111111', letterSpacing: '-0.2px' }}>
-              AegisGraph
+              GraphOps
             </span>
           </div>
 
@@ -1129,6 +1167,7 @@ export default function App() {
               { id: 'findings', label: 'Findings', count: repoData?.vulnerabilities?.length },
               { id: 'files', label: 'Files', count: scannedFilesList.length },
               { id: 'change-safety', label: '🛡️ Change Safety', count: null },
+              { id: 'soc-hunter', label: '🎯 SOC Threat Hunter (500 Nodes)', count: '500' },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -1512,6 +1551,13 @@ export default function App() {
             </div>
           )}
 
+          {/* TAB 5: SOC THREAT HUNTER */}
+          {activeTab === 'soc-hunter' && (
+            <div style={{ flex: 1, position: 'relative', overflow: 'hidden', background: '#0b1120', display: 'flex', flexDirection: 'column' }}>
+              <GraphCanvas graphData={{ nodes: [], edges: [] }} />
+            </div>
+          )}
+
           {/* TAB 4: CHANGE SAFETY REPORT & DIFF */}
           {activeTab === 'change-safety' && (
             <div style={{ flex: 1, overflowY: 'auto', padding: 24, background: '#FAFAFA' }}>
@@ -1658,6 +1704,13 @@ export default function App() {
                   </div>
                 )}
               </div>
+            </div>
+          )}
+
+          {/* TAB 5: SOC THREAT HUNTER */}
+          {activeTab === 'soc-hunter' && (
+            <div style={{ flex: 1, position: 'relative', overflow: 'hidden', background: '#0b1120', display: 'flex', flexDirection: 'column' }}>
+              <GraphCanvas graphData={{ nodes: [], edges: [] }} />
             </div>
           )}
 
@@ -1915,7 +1968,7 @@ export default function App() {
           )}
         </div>
         <div>
-          <span>AegisGraph AI · Qwen 3 + Wispr Flow Intelligence</span>
+          <span>GraphOps · Qwen 3 + Wispr Flow Intelligence</span>
         </div>
       </footer>
 

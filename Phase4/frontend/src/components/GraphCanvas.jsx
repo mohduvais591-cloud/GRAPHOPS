@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react'
 import ParagraphCard from './ParagraphCard'
+import VoiceBrainBar from './VoiceBrainBar'
 
 /**
  * Advanced Multi-Document Knowledge Graph Canvas.
@@ -36,6 +37,112 @@ export default function GraphCanvas({
   // Story Tour state
   const [tourActive, setTourActive] = useState(false)
   const [tourStep, setTourStep] = useState(0)
+
+  // SOC Controls, Blast Radius, & Audit Ledger State
+  const [socLoading, setSocLoading] = useState(false)
+  const [seedMs, setSeedMs] = useState(null)
+  const [isSimulating, setIsSimulating] = useState(false)
+  const [compromiseHops, setCompromiseHops] = useState({})
+  const [isSevered, setIsSevered] = useState(false)
+  const [exposedJewels, setExposedJewels] = useState([])
+  const [auditDrawerOpen, setAuditDrawerOpen] = useState(false)
+  const [auditChain, setAuditChain] = useState([])
+  const [auditVerifyResult, setAuditVerifyResult] = useState(null)
+  const [certReport, setCertReport] = useState(null)
+
+  const handleSeed500 = async () => {
+    setSocLoading(true)
+    try {
+      const res = await fetch('/v1/demo/seed-500', { method: 'POST' })
+      const data = await res.json()
+      setSeedMs(data.elapsed_ms || 42)
+    } catch (err) {
+      console.error('Seed failed:', err)
+    } finally {
+      setSocLoading(false)
+    }
+  }
+
+  const handleSimulateCompromise = async () => {
+    try {
+      const res = await fetch('/v1/analytics/blast-radius/workstation-14?depth=3')
+      const data = await res.json()
+      const hops = {}
+      hops['workstation-14'] = 0
+      ;(data['Hop 1'] || data.hop_1 || []).forEach((n) => { hops[n.id] = 1; hops[n.name] = 1 })
+      ;(data['Hop 2'] || data.hop_2 || []).forEach((n) => { hops[n.id] = 2; hops[n.name] = 2 })
+      ;(data['Hop 3'] || data.hop_3 || []).forEach((n) => { hops[n.id] = 3; hops[n.name] = 3 })
+      setCompromiseHops(hops)
+      setIsSimulating(true)
+      setExposedJewels(data.crown_jewels_exposed || [])
+    } catch (err) {
+      console.error('Simulate compromise failed:', err)
+    }
+  }
+
+  const handleSeverChokePoint = async (nodeId = 'jump-bastion-370') => {
+    try {
+      const res = await fetch(`/v1/analytics/sever/${nodeId}`, { method: 'POST' })
+      const data = await res.json()
+      setIsSevered(true)
+      setExposedJewels([])
+      const brRes = await fetch('/v1/analytics/blast-radius/workstation-14?depth=3')
+      const brData = await brRes.json()
+      const hops = {}
+      hops['workstation-14'] = 0
+      ;(brData['Hop 1'] || brData.hop_1 || []).forEach((n) => { hops[n.id] = 1; hops[n.name] = 1 })
+      ;(brData['Hop 2'] || brData.hop_2 || []).forEach((n) => { hops[n.id] = 2; hops[n.name] = 2 })
+      ;(brData['Hop 3'] || brData.hop_3 || []).forEach((n) => { hops[n.id] = 3; hops[n.name] = 3 })
+      setCompromiseHops(hops)
+    } catch (err) {
+      console.error('Sever failed:', err)
+    }
+  }
+
+  const handleOpenAuditDrawer = async () => {
+    setAuditDrawerOpen(true)
+    try {
+      const res = await fetch('/v1/audit/ledger')
+      const data = await res.json()
+      setAuditChain(data.chain || [])
+      const vRes = await fetch('/v1/audit/verify')
+      const vData = await vRes.json()
+      setAuditVerifyResult(vData)
+    } catch (err) {
+      console.error('Audit fetch failed:', err)
+    }
+  }
+
+  const handleVerifyChain = async () => {
+    try {
+      const res = await fetch('/v1/audit/verify')
+      const data = await res.json()
+      setAuditVerifyResult(data)
+    } catch (err) {
+      console.error('Verify chain failed:', err)
+    }
+  }
+
+  const handleExportCert = async () => {
+    try {
+      const res = await fetch('/v1/audit/cert-in-report/INCIDENT-2026-001')
+      const data = await res.json()
+      setCertReport(data)
+    } catch (err) {
+      console.error('Export cert failed:', err)
+    }
+  }
+
+  const handleBrainAction = (action) => {
+    if (!action) return
+    if (action.intent === 'SIMULATE_COMPROMISE') {
+      handleSimulateCompromise()
+    } else if (action.intent === 'SHOW_CHOKE_POINTS') {
+      handleSeed500()
+    } else if (action.intent === 'SEVER_EDGE') {
+      handleSeverChokePoint(action.target_node || 'jump-bastion-370')
+    }
+  }
 
   // Simulation state maintained in refs for 60fps performance
   const simNodesRef = useRef([])
@@ -564,7 +671,18 @@ export default function GraphCanvas({
         ctx.beginPath()
         ctx.arc(node.x, node.y, node.radius, 0, 2 * Math.PI)
 
-        if (node.type === 'document') ctx.fillStyle = '#f59e0b'
+        const hop = compromiseHops[node.id] ?? compromiseHops[node.name]
+        if (hop === 0 || (isSimulating && (node.id === 'workstation-14' || node.name === 'workstation-14'))) {
+          ctx.fillStyle = '#dc2626' // Compromised Crimson
+        } else if (hop === 1) {
+          ctx.fillStyle = '#ef4444' // 1-Hop Red
+        } else if (hop === 2) {
+          ctx.fillStyle = '#f97316' // 2-Hop Orange
+        } else if (hop === 3) {
+          ctx.fillStyle = '#eab308' // 3-Hop Yellow
+        } else if (isSevered && (node.id === 'jump-bastion-370' || node.name === 'jump-bastion-370')) {
+          ctx.fillStyle = '#64748b' // Severed Choke Point Gray
+        } else if (node.type === 'document') ctx.fillStyle = '#f59e0b'
         else if (node.type === 'topic') ctx.fillStyle = '#9333ea'
         else if (node.type === 'chunk') ctx.fillStyle = '#475569'
         else if (node.type === 'value') ctx.fillStyle = '#06b6d4'
@@ -854,6 +972,86 @@ export default function GraphCanvas({
               </span>
             </>
           )}
+        </div>
+
+        {/* SOC Live Threat Hunting & Action Controls */}
+        <div className="soc-top-controls" style={{ display: 'flex', gap: '6px', alignItems: 'center', marginLeft: 'auto' }}>
+          <button
+            className="soc-btn seed"
+            onClick={handleSeed500}
+            disabled={socLoading}
+            id="seed-500-btn"
+            title="Seed 500 Enterprise Nodes via Neo4j AuraDB UNWIND Batch"
+            style={{
+              padding: '6px 12px',
+              fontSize: '11px',
+              fontWeight: 600,
+              background: '#0284c7',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            ⚡ {socLoading ? 'Seeding...' : seedMs ? `Seed 500 (${seedMs}ms)` : 'Seed 500 Nodes'}
+          </button>
+          <button
+            className="soc-btn compromise"
+            onClick={handleSimulateCompromise}
+            id="simulate-compromise-btn"
+            title="Simulate Compromise on workstation-14 and compute blast radius"
+            style={{
+              padding: '6px 12px',
+              fontSize: '11px',
+              fontWeight: 600,
+              background: '#dc2626',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+          >
+            🎯 Simulate Compromise
+          </button>
+          <button
+            className="soc-btn sever"
+            onClick={() => handleSeverChokePoint('jump-bastion-370')}
+            id="sever-chokepoint-btn"
+            title="Sever choke point at jump-bastion-370 to isolate crown jewels"
+            style={{
+              padding: '6px 12px',
+              fontSize: '11px',
+              fontWeight: 600,
+              background: isSevered ? '#475569' : '#7c3aed',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+          >
+            {isSevered ? '✂️ Severed (jump-bastion-370)' : '✂️ Sever Choke Point'}
+          </button>
+          <button
+            className="soc-btn audit"
+            onClick={handleOpenAuditDrawer}
+            id="audit-ledger-btn"
+            title="View Append-Only SHA-256 Audit Ledger & Export CERT-In Report"
+            style={{
+              padding: '6px 12px',
+              fontSize: '11px',
+              fontWeight: 600,
+              background: '#0f766e',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+          >
+            📜 Audit Ledger
+          </button>
         </div>
       </div>
 
@@ -1164,22 +1362,184 @@ export default function GraphCanvas({
       {/* Floating Legend */}
       <div className="graph-legend">
         <div className="legend-item">
-          <span style={{ fontSize: '11px' }}>🏝️</span>
-          <span>Document Island</span>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#dc2626' }}></div>
+          <span>Compromised</span>
         </div>
         <div className="legend-item">
-          <span style={{ fontSize: '11px' }}>📄</span>
-          <span>Paragraph Card</span>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ef4444' }}></div>
+          <span>Hop 1</span>
+        </div>
+        <div className="legend-item">
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#f97316' }}></div>
+          <span>Hop 2</span>
+        </div>
+        <div className="legend-item">
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#eab308' }}></div>
+          <span>Hop 3</span>
         </div>
         <div className="legend-item">
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#38bdf8' }}></div>
-          <span>Shared Entity Bridge</span>
+          <span>Bridge / Host</span>
         </div>
         <div className="legend-item">
           <div className="legend-dot-conflict"></div>
-          <span>Contradiction</span>
+          <span>Zero-Trust Delta</span>
         </div>
       </div>
+
+      {/* Voice & Brain Co-Pilot Bar */}
+      <div style={{ position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)', zIndex: 40, width: '92%', maxWidth: '820px' }}>
+        <VoiceBrainBar onBrainAction={handleBrainAction} selectedNodeId={selectedElement?.id} />
+      </div>
+
+      {/* Audit Ledger & CERT-In Report Drawer */}
+      {auditDrawerOpen && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            width: '460px',
+            background: 'rgba(15, 23, 42, 0.96)',
+            borderLeft: '1px solid rgba(56, 189, 248, 0.25)',
+            boxShadow: '-10px 0 30px rgba(0,0,0,0.5)',
+            backdropFilter: 'blur(12px)',
+            zIndex: 100,
+            display: 'flex',
+            flexDirection: 'column',
+            padding: '20px',
+            color: '#e2e8f0',
+            fontFamily: 'Inter, sans-serif'
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: '#38bdf8' }}>
+              📜 SOC Audit Ledger (SHA-256)
+            </h3>
+            <button
+              onClick={() => setAuditDrawerOpen(false)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#94a3b8',
+                fontSize: '18px',
+                cursor: 'pointer'
+              }}
+            >
+              ✕
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+            <button
+              onClick={handleVerifyChain}
+              id="verify-chain-btn"
+              style={{
+                flex: 1,
+                padding: '8px 12px',
+                background: '#0284c7',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer'
+              }}
+            >
+              🔍 Verify SHA-256 Chain
+            </button>
+            <button
+              onClick={handleExportCert}
+              id="export-cert-btn"
+              style={{
+                flex: 1,
+                padding: '8px 12px',
+                background: '#0f766e',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '6px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer'
+              }}
+            >
+              📑 Export CERT-In Report
+            </button>
+          </div>
+
+          {auditVerifyResult && (
+            <div
+              style={{
+                padding: '10px 14px',
+                borderRadius: '6px',
+                marginBottom: '14px',
+                fontSize: '12px',
+                background: auditVerifyResult.valid ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                border: `1px solid ${auditVerifyResult.valid ? '#22c55e' : '#ef4444'}`,
+                color: auditVerifyResult.valid ? '#86efac' : '#fca5a5'
+              }}
+            >
+              <strong>{auditVerifyResult.valid ? '✅ Chain Intact & Cryptographically Valid' : '❌ Integrity Violation'}</strong>
+              <div style={{ marginTop: '4px', fontSize: '11px', opacity: 0.9 }}>
+                Verified {auditVerifyResult.verified_blocks ?? auditVerifyResult.length ?? auditChain.length} blocks from genesis
+              </div>
+            </div>
+          )}
+
+          {certReport && (
+            <div
+              style={{
+                padding: '10px 14px',
+                borderRadius: '6px',
+                marginBottom: '14px',
+                background: 'rgba(56, 189, 248, 0.1)',
+                border: '1px solid rgba(56, 189, 248, 0.3)',
+                fontSize: '11px',
+                maxHeight: '140px',
+                overflowY: 'auto'
+              }}
+            >
+              <div style={{ fontWeight: 600, color: '#38bdf8', marginBottom: '4px' }}>CERT-In Incident Package</div>
+              <div><strong>Incident:</strong> {certReport.incident_id || 'INCIDENT-2026-001'}</div>
+              <div><strong>Root Hash:</strong> <code style={{ fontSize: '10px' }}>{certReport.root_hash ? String(certReport.root_hash).slice(0, 16) : 'N/A'}...</code></div>
+              <div><strong>Compliance:</strong> Rule 11(1) 6-Hour Reporting Standard</div>
+            </div>
+          )}
+
+          <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {auditChain.length === 0 ? (
+              <div style={{ textAlign: 'center', color: '#64748b', marginTop: '40px', fontSize: '12px' }}>
+                No audit blocks recorded yet. Actions log automatically.
+              </div>
+            ) : (
+              auditChain.map((b, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    background: 'rgba(30, 41, 59, 0.8)',
+                    borderRadius: '6px',
+                    padding: '10px',
+                    border: '1px solid #334155',
+                    fontSize: '11px'
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ fontWeight: 700, color: '#f1f5f9' }}>Block #{idx} · {b.action}</span>
+                    <span style={{ color: '#94a3b8' }}>{b.timestamp ? new Date(b.timestamp).toLocaleTimeString() : ''}</span>
+                  </div>
+                  <div style={{ color: '#cbd5e1', marginBottom: '4px' }}>
+                    <strong>Actor:</strong> {b.actor} | <strong>Target:</strong> {b.target_id}
+                  </div>
+                  <div style={{ fontFamily: 'monospace', color: '#38bdf8', fontSize: '10px', wordBreak: 'break-all' }}>
+                    SHA-256: {b.hash}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

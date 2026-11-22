@@ -34,7 +34,7 @@ export default function ChatPanel({ workspaceId, onRunQuery, isQuerying, queryRe
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `aegisgraph-investigation.${format}`
+      link.download = `graphops-investigation.${format}`
       link.click()
       setTimeout(() => URL.revokeObjectURL(url), 1000)
     } catch (error) { if (current === generation.current) setInvestigationError(error.message) }
@@ -122,14 +122,14 @@ export default function ChatPanel({ workspaceId, onRunQuery, isQuerying, queryRe
           <li>Found {investigation.paths.paths.length} potential routes.</li>
         </ol>
         <p>{investigation.review.finding}</p>
-        <div style={{display:'flex',gap:'6px',flexWrap:'wrap'}}>
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
           <button className="topic-chip" disabled={isExporting || isInvestigating} onClick={() => exportReport('txt')}>
             {isExporting ? 'Preparing report…' : 'Download report'}
           </button>
           <button className="topic-chip" disabled={isExporting || isInvestigating} onClick={() => exportReport('json')}>Download JSON</button>
         </div>
-        <p style={{fontSize:'0.75rem',color:'var(--text-muted)'}}>Downloads contain source data from this workspace and use a fresh investigation snapshot.</p>
-        <p style={{fontSize:'0.75rem',color:'var(--accent-amber)'}}>{investigation.review.limitations}</p>
+        <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Downloads contain source data from this workspace and use a fresh investigation snapshot.</p>
+        <p style={{ fontSize: '0.75rem', color: 'var(--accent-amber)' }}>{investigation.review.limitations}</p>
         {investigation.evidence.source_chunks.map(source => <button className="topic-chip"
           key={`${source.chunk_id}-${source.start_char}`} onClick={() => onSelectChunk?.(source)}>
           Inspect {source.source_name} · page {source.page_number}

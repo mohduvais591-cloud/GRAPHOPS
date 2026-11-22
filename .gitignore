@@ -22,6 +22,7 @@ yarn-error.log*
 
 # Environment secrets
 .env
+**/.env
 .env.local
 .env.*.local
 *service-account*.json

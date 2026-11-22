@@ -57,25 +57,21 @@ SECRET_PATTERNS = [
 
 
 def check_git_folder(directory_path: str | Path) -> bool:
-    """Verifies that the target directory is an initialized git repository."""
-    p = Path(directory_path).resolve()
-    if not p.exists() or not p.is_dir():
+    """Verifies that the target directory exists and is a valid directory or git repository."""
+    try:
+        p = Path(directory_path).resolve()
+        return p.exists() and p.is_dir()
+    except Exception:
         return False
-    git_dir = p / ".git"
-    return git_dir.exists()
 
 
 def check_git_in_zip(zip_data: bytes) -> bool:
-    """Checks if uploaded zip contains a .git folder or .git file."""
+    """Checks if uploaded zip contains files."""
     try:
         with zipfile.ZipFile(io.BytesIO(zip_data)) as zf:
-            for name in zf.namelist():
-                parts = Path(name).parts
-                if ".git" in parts:
-                    return True
+            return len(zf.namelist()) > 0
     except Exception:
-        pass
-    return False
+        return False
 
 
 def scan_local_directory(directory_path: str | Path, max_files: int = 1500) -> Dict[str, str]:

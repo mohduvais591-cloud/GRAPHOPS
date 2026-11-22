@@ -1,4 +1,4 @@
-/* AegisGraph AI — Minimal Black-and-White Design System */
+/* GraphOps — Minimal Black-and-White Design System */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
@@ -44,7 +44,8 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   background-color: var(--bg-canvas);
   color: var(--text-primary);
   font-family: var(--font-sans);
@@ -65,7 +66,9 @@ button {
   transition: all 0.15s ease;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: inherit;
   outline: none;
 }
@@ -75,26 +78,37 @@ input, textarea, select {
   width: 5px;
   height: 5px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #E5E5E5;
   border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #CCCCCC;
 }
 
 /* Code & Pre */
-pre, code {
+pre,
+code {
   font-family: var(--font-mono);
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in {
@@ -102,8 +116,17 @@ pre, code {
 }
 
 @keyframes pulseDot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.9); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
 }
 
 .pulse-dot {
